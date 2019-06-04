@@ -1,3 +1,11 @@
 0	'xiaoming'	20	'male'	0	6000.00
 1	'xiaohong'	19	'female'	1	7000.00
 3	'xiaogang'	16	'male'	1	6000.00
+
+
+select companyName, `name` from company INNER JOIN (select companyId, `name`, MAX(salary) from employee GROUP BY companyId) as b on company.id = b.companyId;
+
+'baidu'	'xiaoming'
+'alibaba'	'xiaohong'
+'tengxun'	'xiaozhi'
+
