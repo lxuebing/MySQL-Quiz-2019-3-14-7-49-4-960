@@ -1,11 +1,47 @@
+//第一题
 0	'xiaoming'	20	'male'	0	6000.00
 1	'xiaohong'	19	'female'	1	7000.00
 3	'xiaogang'	16	'male'	1	6000.00
 
-
+//第二题
 select companyName, `name` from company INNER JOIN (select companyId, `name`, MAX(salary) from employee GROUP BY companyId) as b on company.id = b.companyId;
 
 'baidu'	'xiaoming'
 'alibaba'	'xiaohong'
 'tengxun'	'xiaozhi'
 
+
+//第三题
+SELECT
+            d.companyName,AVG(e.salary) avgsal
+FROM
+            employee e
+INNER JOIN
+            company d
+ON
+            e.companyId =d.id
+
+GROUP BY
+            e.companyId,d.companyName
+HAVING
+            avgsal = (
+                                SELECT
+                                            MAX(t.avgsal) maxsal
+                                FROM (
+                                            SELECT companyId,AVG(salary) avgsal
+                                            FROM employee
+                                            GROUP BY companyId) t
+			)
+
+'tengxun'	8000.000000
+
+
+//第四题
+SELECT x.id,x.`name`,x.age,x.gender,x.salary,company.companyName,x.avgsal FROM company INNER JOIN
+
+(SELECT employee.*, t.avgsal FROM employee INNER JOIN(
+SELECT companyId,AVG(salary) as avgsal FROM employee GROUP BY companyId) t ON employee.companyId = t.companyId WHERE employee.salary > t.avgsal) x
+ON x.companyId = company.id
+
+0	'xiaoming'	20	'male'	6000.00	'baidu'	5000.000000
+1	'xiaohong'	19	'female'	7000.00	'alibaba'	6500.000000
